@@ -10,28 +10,41 @@ from firebase_admin import credentials, firestore
 
 def main():
     options = webdriver.ChromeOptions()
-    # options.add_argument('headless')
+    options.add_argument('headless')
     options.add_argument('window-size=1920x1080')
     options.add_argument("disable-gpu")
     options.add_argument(
         "--user-data-dir=/Users/andreasbigger/Library/Application Support/Google/Chrome Canary/Default")
 
-    load_dotenv()
+    # * Load environment variables
+    try:
+        load_dotenv()
+        print("Successfully loaded environment variables.")
+    except:
+        print("Failed to load environment variables!")
 
-    cred = credentials.Certificate("serviceAccountKey.json")
-    firebase_admin.initialize_app(cred)
-    db = firestore.client()
-    db.collection(u'art')
-    snapshots = list(db.collection(u'art').get())
     count = 1  # * Initialize to 1 if no collection in firebase
-    for snapshot in snapshots:
-        if 'art' in snapshot.to_dict().keys():
-            count = len(snapshot.to_dict()['art']) + 1
+    db = {}
 
-    # * Initiate the browser
-    browser = webdriver.Chrome(options=options)
+    # * Load firebase database
+    try:
+        cred = credentials.Certificate("serviceAccountKey.json")
+        firebase_admin.initialize_app(cred)
+        db = firestore.client()
+        db.collection(u'art')
+        snapshots = list(db.collection(u'art').get())
+        for snapshot in snapshots:
+            if 'art' in snapshot.to_dict().keys():
+                count = len(snapshot.to_dict()['art']) + 1
+        print("Successfully loaded data from firebase.")
+    except:
+        print("Failed to fetch from firebase!")
 
+    # * Infinitely list :)
     while(1):
+        # * Initiate the browser
+        browser = webdriver.Chrome(options=options)
+
         # * Open Random Art
         browser.get('https://www.randomart.co.uk/')
 
@@ -47,7 +60,7 @@ def main():
 
         # * Download the image
         urllib.request.urlretrieve(src, art_name)
-        print(count, ": Downloaded ", art_name)
+        print(count, ": Successful download! Item: ", art_name)
 
         Mintable_Listing(browser, count, art_name, db)
         count += 1
@@ -88,9 +101,10 @@ def Mintable_Listing(browser, count, art_name, db):
 
         time.sleep(3)
 
-        print("Successfully logged in! :)")
+        print("Successfully logged into Mintable! :)")
     except:
-        print("Failed to login to mintable! :(")
+        # * If failure, we are already logged in
+        # print("Failed to login to Mintable! :(")
         time.sleep(3)
 
     main_window_handle = browser.current_window_handle
@@ -128,8 +142,9 @@ def Mintable_Listing(browser, count, art_name, db):
             # * Click Unlock
             browser.find_element_by_xpath(
                 '/html/body/div[1]/div/div[3]/div/div/button').click()
+            print("Successfully logged into Metamask :)")
         except:
-            print("Failed to login to metamask :(")
+            print("Failed to login to Metamask :(")
 
         time.sleep(3)
         # * Click on Metamask Next
@@ -139,9 +154,9 @@ def Mintable_Listing(browser, count, art_name, db):
         # * Click on Metamask Connect
         browser.find_element_by_xpath(
             '//*[@id="app-content"]/div/div[3]/div/div[2]/div[2]/div[2]/footer/button[2]').click()
-
     except:
-        print("Failed to connect metamask...")
+        pass
+        # print("Failed to connect Metamask...")
 
     # * Switch back to main window
     browser.switch_to.window(main_window_handle)
@@ -214,11 +229,15 @@ def Mintable_Listing(browser, count, art_name, db):
     # * Wait for mintable verifying upload
     time.sleep(5)
 
-    # * LIST THE ITEM
-    browser.find_element_by_xpath(
-        '//*[@id="root"]/div/div[2]/div/div/div/form/div[17]/button').click()
+    try:
+        # * LIST THE ITEM
+        browser.find_element_by_xpath(
+            '//*[@id="root"]/div/div[2]/div/div/div/form/div[17]/button').click()
+        time.sleep(2)
+        print("Successfully listed item!")
+    except:
+        print("Failed to list item!")
 
-    time.sleep(2)
     # * Click Proceed for Metamask Signing
     browser.find_element_by_xpath(
         '/html/body/div[4]/div/div/div/div[2]/div[2]/div/button').click()
@@ -239,6 +258,7 @@ def Mintable_Listing(browser, count, art_name, db):
         '//*[@id="app-content"]/div/div[3]/div/div[4]/button[2]').click()
 
     time.sleep(3)
+    browser.switch_to.window(main_window_handle)
 
     print("Item ", art_name, " listed!")
 
@@ -266,10 +286,14 @@ def Mintable_Listing(browser, count, art_name, db):
         'art': prev_array + [data],
     })
 
+    print("Successfully uploaded data to firebase!")
+
     # * Give time for database to asynchronously update
     time.sleep(5)
 
     browser.quit()
+
+    time.sleep(2)
 
 
 # * Run main, dummy!
