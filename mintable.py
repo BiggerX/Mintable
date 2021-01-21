@@ -4,7 +4,8 @@ import os
 from dotenv import load_dotenv
 from selenium import webdriver
 import chromedriver_binary  # * Adds chromedriver binary to path
-from firebase import Firebase
+import firebase_admin
+from firebase_admin import credentials, firestore
 
 
 def main():
@@ -17,22 +18,15 @@ def main():
 
     load_dotenv()
 
-    apiKey = os.getenv('FIREBASE_API_KEY')
-    authDomain = os.getenv('FIREBASE_AUTH_DOMAIN')
-    dbUrl = os.getenv('FIREBASE_DATABASE_URL')
-    storageBucket = os.getenv('FIREBASE_STORAGE_BUCKET')
-
-    config = {
-        "apiKey": apiKey,
-        "authDomain": authDomain,
-        "databaseURL": dbUrl,
-        "storageBucket": storageBucket
-    }
-
-    firebase = Firebase(config)
-    db = firebase.database()
-    print(db.child("art").get())
-    count = len(db.child("art").get())
+    cred = credentials.Certificate("serviceAccountKey.json")
+    firebase_admin.initialize_app(cred)
+    db = firestore.client()
+    db.collection(u'art')
+    snapshots = list(db.collection(u'art').get())
+    count = 1  # * Initialize to 1 if no collection in firebase
+    for snapshot in snapshots:
+        if 'art' in snapshot.to_dict().keys():
+            count = len(snapshot.to_dict()['art']) + 1
 
     # * Initiate the browser
     browser = webdriver.Chrome(options=options)
@@ -260,7 +254,20 @@ def Mintable_Listing(browser, count, art_name, db):
         "url": browser.current_url
     }
 
-    db.child("users").push(data)
+    snapshots = list(db.collection(u'art').get())
+    prev_array = []
+    for snapshot in snapshots:
+        if 'art' in snapshot.to_dict().keys():
+            prev_array = snapshot.to_dict()['art']
+
+    doc_ref = db.collection(u'art').document(u'art_list')
+
+    doc_ref.update({
+        'art': prev_array + [data],
+    })
+
+    # * Give time for database to asynchronously update
+    time.sleep(5)
 
     browser.quit()
 
