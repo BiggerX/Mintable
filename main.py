@@ -5,7 +5,7 @@ if __name__ == "__main__":
     questions = [
         inquirer.List('mint',
                     message="What do you want to mint?",
-                    choices=['Mandelbrot', 'Julia', 'Random'],
+                    choices=['Julia', 'Mandelbrot', 'Random'],
                 ),
     ]
     answers = inquirer.prompt(questions)

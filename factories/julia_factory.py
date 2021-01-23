@@ -59,6 +59,8 @@ def julia_mint():
         Mintable_Listing(browser, count, token_price, file_name, db, collection_name, collection_title, collection_subtitle, collection_description)
         count += 1
 
+    print("Finished uploading!")
+
 
 def Mintable_Listing(browser, count, token_price, file_name, db, collection_name, collection_title, collection_subtitle, collection_description):
     browser.get('https://mintable.app/gasless')
@@ -213,7 +215,7 @@ def Mintable_Listing(browser, count, token_price, file_name, db, collection_name
     itemPrice.send_keys(token_price)
 
     # * Wait for mintable verifying upload
-    time.sleep(5)
+    time.sleep(10)
 
     try:
         # * LIST THE ITEM

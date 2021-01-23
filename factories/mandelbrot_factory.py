@@ -59,6 +59,8 @@ def mandelbrot_mint():
         Mintable_Listing(browser, count, token_price, file_name, db, collection_name, collection_title, collection_subtitle, collection_description)
         count += 1
 
+    print("Finished uploading!")
+
 
 def Mintable_Listing(browser, count, token_price, file_name, db, collection_name, collection_title, collection_subtitle, collection_description):
     browser.get('https://mintable.app/gasless')
