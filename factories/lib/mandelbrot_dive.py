@@ -1,6 +1,7 @@
 from PIL import Image
 from tqdm import tqdm
 import math
+import random
 
 
 W, H = 200, 200  # размеры картинки
@@ -9,14 +10,29 @@ FRAMES = 100
 
 
 def get_palette(max_iter):
+    random_num = random.randint(1,51)
+
+    random_1 = random.uniform(0, 2)
+    random_2 = random.uniform(0, 2)
+    random_3 = random.uniform(0, 2)
+
+    # * Surrounding Colors
     palette = [
         (
-            int(255 * math.sin(i / 50.0 + 1.0) ** 2),
-            int(255 * math.sin(i / 50.0 + 0.5) ** 2),
-            int(255 * math.sin(i / 50.0 + 1.7) ** 2)
+            int(255 * math.sin(i / random_num + random_1) ** 2),
+            int(255 * math.sin(i / random_num + random_2) ** 2),
+            int(255 * math.sin(i / random_num + random_3) ** 2)
         ) for i in range(max_iter - 1)
     ]
-    palette.append((0, 0, 0))
+
+    # * Mandelbrot Color
+    palette.append((
+        int(255 * math.sin(100 / random_num + random.uniform(0, 2)) ** 2),
+        int(255 * math.sin(100 / random_num + random.uniform(0, 2)) ** 2),
+        int(255 * math.sin(100 / random_num + random.uniform(0, 2)) ** 2)
+        )
+    )
+
     return palette
 
 
@@ -58,3 +74,6 @@ def createMandelbrotGIF(file_name, collection_num):
         r += (r_tar - r) * 0.1
 
     frames[0].save(file_name, save_all=True, append_images=frames[1:], duration=60, loop=0)
+
+if __name__ == "__main__":
+    createManelbrotGIF('test.gif', 0)

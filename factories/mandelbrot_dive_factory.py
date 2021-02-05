@@ -6,6 +6,7 @@ import chromedriver_binary  # * Adds chromedriver binary to path
 import firebase_admin
 from firebase_admin import credentials, firestore
 from factories.lib import mandelbrot_dive
+from pathlib import Path
 
 def mandelbrot_mint():
     options = webdriver.ChromeOptions()
@@ -48,9 +49,13 @@ def mandelbrot_mint():
         collection_description = 'Part ' + str(count) + ' out of 10 in the Mandelbrot Dive Series by Toxic Mushroom. Nature\'s patterns present themselves everywhere in our daily lives. This series captures the Mandelbrot Dive - a toxic process capturing our clowning attention.'
         token_price = '30'
 
-        # * First create the art
         file_name = "images/mandelbrot_dive_series/mandelbrot_token_" + str(count) + ".gif"
-        mandelbrot_dive.createMandelbrotGIF(file_name, count)
+        my_file = Path(file_name)
+        if not my_file.is_file():
+            # * Create the art if file doesn't exist
+            mandelbrot_dive.createMandelbrotGIF(file_name, count)
+        else:
+            print("File already exists... proceeding to upload.")
 
         # * Initiate the browser
         browser = webdriver.Chrome(options=options)
@@ -184,13 +189,13 @@ def Mintable_Listing(browser, count, token_price, file_name, db, collection_name
         '/html/body/div[1]/div/div[2]/div/div/div/form/div[7]/input')  # .click()
     # browser.switchTo().frame("batchLoad:inputFile:uploadFrame")
     firstUploadElement.send_keys(os.getcwd() + '/' + file_name)
-    time.sleep(4)
+    time.sleep(10)
 
     secondUploadElement = browser.find_element_by_xpath(
         '/html/body/div[1]/div/div[2]/div/div/div/form/div[10]/div/div/div[1]/input')
     secondUploadElement.send_keys(os.getcwd() + '/' + file_name)
 
-    time.sleep(4)
+    time.sleep(10)
 
     # * Input Metadata Title
     metadataTitle = browser.find_element_by_xpath(
