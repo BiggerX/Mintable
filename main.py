@@ -1,11 +1,11 @@
 import inquirer
-from factories import mandelbrot_factory, julia_factory, random_factory, mandelbrot_dive_factory, invader_factory
+from factories import mandelbrot_factory, julia_factory, random_factory, mandelbrot_dive_factory, invader_factory, rainbow_factory
 
 if __name__ == "__main__":
     questions = [
         inquirer.List('mint',
                       message="What do you want to mint?",
-                      choices=['Invader', 'Julia', 'Mandelbrot',
+                      choices=['Random Rainbow', 'Invader', 'Julia', 'Mandelbrot',
                                'Mandelbrot Dive', 'Random Gif', 'Random Image'],
                       ),
     ]
@@ -19,7 +19,9 @@ if __name__ == "__main__":
         julia_factory.julia_mint()
     elif answers['mint'] == 'Invader':
         print('Generating Invader NFTs and uploading to Mintable.app')
-        invader_factory.invader_mint()
+    elif answers['mint'] == 'Random Rainbow':
+        print('Generating Random Rainbow NFTs and uploading to Mintable.app')
+        rainbow_factory.random_rainbow_mint()
     elif answers['mint'] == 'Mandelbrot Dive':
         print('Generating Mandelbrot Dive NFTs and uploading to Mintable.app')
         mandelbrot_dive_factory.mandelbrot_mint()
