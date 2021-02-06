@@ -5,7 +5,7 @@ from selenium import webdriver
 import chromedriver_binary  # * Adds chromedriver binary to path
 import firebase_admin
 from firebase_admin import credentials, firestore
-from factories.lib import random
+from factories.lib import random_art
 
 def random_mint():
     options = webdriver.ChromeOptions()
@@ -50,7 +50,7 @@ def random_mint():
 
         # * First create the art
         file_name = "images/random_series/random_token_" + str(count) + ".png"
-        random.downloadRandomArt(browser, file_name)
+        random_art.downloadRandomArt(browser, file_name)
 
         # * Initiate the browser
         browser = webdriver.Chrome(options=options)
