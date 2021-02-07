@@ -134,7 +134,7 @@ def Mintable_Listing(browser, count, token_price, file_name, db, collection_name
         '/html/body/div[1]/div/div[2]/div/div/div/form/div[10]/div/div/div[1]/input')
     secondUploadElement.send_keys(os.getcwd() + '/' + file_name)
 
-    time.sleep(300)
+    time.sleep(20)
 
     # * Input Metadata Title
     metadataTitle = browser.find_element_by_xpath(

@@ -67,8 +67,7 @@ def mint():
             str(count) + ".png"
         if not my_file.is_file():
             # * Create the art if file doesn't exist
-            crystalize.main(
-                file_name, background_image, main_name + " " + str(count), 1000, 1000)
+            crystalize.main(background_image, file_name)
         else:
             print("File already exists... proceeding to upload.")
 
