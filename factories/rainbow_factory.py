@@ -42,11 +42,12 @@ def random_rainbow_mint():
     except:
         print("Failed to fetch from firebase!")
 
-    # * Infinitely list :)
-    while(count <= 13):
+    # * List max_count items
+    max_count = 13
+    while(count <= max_count):
         # * Refresh titles with updated counts
         collection_title = 'Rainbow Series Token ' + str(count)
-        collection_subtitle = 'Number ' + str(count) + '/10 Tokens'
+        collection_subtitle = 'Number ' + str(count) + '/' + str(max_count) + ' Tokens'
         collection_description = 'Part ' + \
             str(count) + ' out of 20 in the Rainbow Dive Series by Toxic Mushroom. Nature\'s patterns present themselves everywhere in our daily lives. This series captures the explosive beauty in colorized darkness.'
         token_price = '30'
