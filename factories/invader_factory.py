@@ -9,7 +9,7 @@ from factories.lib import invader
 from pathlib import Path
 
 
-def invader_mint():
+def mint():
     options = webdriver.ChromeOptions()
     # options.add_argument('headless')
     options.add_argument('window-size=1920x1080')

@@ -9,7 +9,8 @@ from factories.lib import taste
 from pathlib import Path
 from factories.utils import Mintable_Listing
 
-def taste_mint():
+
+def mint():
     options = webdriver.ChromeOptions()
     # options.add_argument('headless')
     options.add_argument('window-size=1920x1080')
@@ -68,15 +69,17 @@ def taste_mint():
             print("File already exists... proceeding to upload.")
 
         # * Initiate the browser
-        browser = webdriver.Chrome(options=options, executable_path='./factories/utils/chromedriver')
+        browser = webdriver.Chrome(
+            options=options, executable_path='./factories/utils/chromedriver')
 
         # * List art on mintable
         Mintable_Listing.Mintable_Listing(browser, count, token_price, file_name, db, collection_name,
-                         collection_title, collection_subtitle, collection_description)
+                                          collection_title, collection_subtitle, collection_description)
         count += 1
 
     print("Finished uploading!")
 
+
 # * Run main, dummy!
 if __name__ == "__main__":
-    taste_mint()
+    mint()

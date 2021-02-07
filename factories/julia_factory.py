@@ -7,7 +7,8 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from factories.lib import julia
 
-def julia_mint():
+
+def mint():
     options = webdriver.ChromeOptions()
     # options.add_argument('headless')
     options.add_argument('window-size=1920x1080')
@@ -45,7 +46,8 @@ def julia_mint():
         # * Refresh titles with updated counts
         collection_title = 'Julia Series ' + str(count)
         collection_subtitle = 'Token ' + str(count) + '/10'
-        collection_description = 'Part ' + str(count) + ' out of 10 in the Julia Series by Ladons Imperium. Nature\'s patterns present themselves everywhere in our daily lives. This series captures the Julia metamorphosis - an ever-changing phenomenon.'
+        collection_description = 'Part ' + \
+            str(count) + ' out of 10 in the Julia Series by Ladons Imperium. Nature\'s patterns present themselves everywhere in our daily lives. This series captures the Julia metamorphosis - an ever-changing phenomenon.'
         token_price = '30'
 
         # * First create the art
@@ -56,7 +58,8 @@ def julia_mint():
         browser = webdriver.Chrome(options=options)
 
         # * List art on mintable
-        Mintable_Listing(browser, count, token_price, file_name, db, collection_name, collection_title, collection_subtitle, collection_description)
+        Mintable_Listing(browser, count, token_price, file_name, db, collection_name,
+                         collection_title, collection_subtitle, collection_description)
         count += 1
 
     print("Finished uploading!")
@@ -71,8 +74,10 @@ def Mintable_Listing(browser, count, token_price, file_name, db, collection_name
         username = os.getenv('MINTABLE_USERNAME')
         password = os.getenv('MINTABLE_PASSWORD')
 
-        print("Read in username successfully from .env file: ", str(len(username) > 0))
-        print("Read in password successfully from .env file: ", str(len(password) > 0))
+        print("Read in username successfully from .env file: ",
+              str(len(username) > 0))
+        print("Read in password successfully from .env file: ",
+              str(len(password) > 0))
 
         # * Input Username
         tokenName = browser.find_element_by_xpath(
@@ -121,7 +126,8 @@ def Mintable_Listing(browser, count, token_price, file_name, db, collection_name
         try:
             time.sleep(3)
             password = os.getenv('METAMASK_PASSWORD')
-            print("Successfully read metamask password from .env file: ", str(len(password) > 0))
+            print("Successfully read metamask password from .env file: ",
+                  str(len(password) > 0))
 
             # * Switch to popup window
             signin_window_handle = None
@@ -180,7 +186,8 @@ def Mintable_Listing(browser, count, token_price, file_name, db, collection_name
     listingSubTitle.send_keys(collection_subtitle)
 
     # * Upload Image
-    firstUploadElement = browser.find_element_by_xpath('/html/body/div[1]/div/div[2]/div/div/div/form/div[7]/input')
+    firstUploadElement = browser.find_element_by_xpath(
+        '/html/body/div[1]/div/div[2]/div/div/div/form/div[7]/input')
 
     firstUploadElement.send_keys(os.getcwd() + '/' + file_name)
 

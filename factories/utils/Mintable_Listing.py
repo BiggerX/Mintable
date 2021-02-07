@@ -2,6 +2,7 @@ import time
 import os
 from dotenv import load_dotenv
 
+
 def Mintable_Listing(browser, count, token_price, file_name, db, collection_name, collection_title, collection_subtitle, collection_description):
     browser.get('https://mintable.app/gasless')
 
@@ -218,7 +219,7 @@ def Mintable_Listing(browser, count, token_price, file_name, db, collection_name
 
     doc_ref.update({
         'art': prev_array + [data],
-    })
+    }, {merge: true})
 
     print("Successfully uploaded data to firebase!")
 

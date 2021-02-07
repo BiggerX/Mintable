@@ -9,7 +9,7 @@ from factories.lib import random_rainbow
 from pathlib import Path
 
 
-def random_rainbow_mint():
+def mint():
     options = webdriver.ChromeOptions()
     # options.add_argument('headless')
     options.add_argument('window-size=1920x1080')
@@ -47,7 +47,8 @@ def random_rainbow_mint():
     while(count <= max_count):
         # * Refresh titles with updated counts
         collection_title = 'Rainbow Series Token ' + str(count)
-        collection_subtitle = 'Number ' + str(count) + '/' + str(max_count) + ' Tokens'
+        collection_subtitle = 'Number ' + \
+            str(count) + '/' + str(max_count) + ' Tokens'
         collection_description = 'Part ' + \
             str(count) + ' out of 20 in the Rainbow Dive Series by Toxic Mushroom. Nature\'s patterns present themselves everywhere in our daily lives. This series captures the explosive beauty in colorized darkness.'
         token_price = '30'
@@ -303,4 +304,4 @@ def Mintable_Listing(browser, count, token_price, file_name, db, collection_name
 
 # * Run main, dummy!
 if __name__ == "__main__":
-    random_rainbow_mint()
+    mint()
