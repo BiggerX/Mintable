@@ -12,7 +12,7 @@ import os
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 0)
 
 
-def r(): return random.randint(1, 100)
+def r(): return random.randint(20, 80)
 
 
 def save_file(screen, screenWidth, screenHeight):
@@ -45,8 +45,8 @@ def main(filename, title, screenWidth=400, screenHeight=400):
 
     running = True
 
-    plusX = screenWidth // 2 - screenWidth // 4
-    plusY = screenHeight // 2 - screenHeight // 4
+    plusX = random.randint(screenWidth // 6, screenWidth // 3)
+    plusY = random.randint(screenWidth // 6, screenHeight // 3)
 
     def draw_flat_line(screen, x1, y1, length, color):
         for x in range(x1, x1 + length):
@@ -68,9 +68,12 @@ def main(filename, title, screenWidth=400, screenHeight=400):
     # quit()
 
     counter = 0
-    max_count = random.randint(100, 2000)
+    max_count = random.randint(6000, 10000)
     random_direction = r()
     random_space = r()
+
+    space_mod = random.randint(200, 300)
+    direction_mod = random.randint(200, 300)
 
     while running and counter < max_count:
         screen.fill(black)
@@ -120,22 +123,24 @@ def main(filename, title, screenWidth=400, screenHeight=400):
                                              screenHeight // 2, screenWidth,
                                              screenHeight))
 
-        if counter % 100 == 0:
+        if counter % space_mod == 0:
             random_space = r()
-        if counter % 200 == 0:
+            space_mod = random.randint(200, 300)
+        if counter % direction_mod == 0:
             random_direction = r()
+            direction_mod = random.randint(200, 300)
 
         if random_space % 2 == 0:
             newPlace = [plusX, plusY]
             cursorList.append(newPlace)
 
-        if random_direction <= 50:
+        if random_direction <= 50 and plusY > 0:
             plusY = plusY - 1
-        elif random_direction <= 100:
+        elif random_direction <= 100 and plusY < (screenHeight // 2):
             plusY = plusY + 1
-        if random_direction <= 50 and random_direction % 2 == 0:
+        if random_direction <= 50 and random_direction % 2 == 0 and plusX > 0:
             plusX = plusX - 1
-        elif random_direction <= 100 and random_direction % 2 == 0:
+        elif random_direction <= 100 and random_direction % 2 == 0 and plusX < (screenWidth // 2):
             plusX = plusX + 1
 
         for event in pygame.event.get():
