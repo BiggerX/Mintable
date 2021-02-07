@@ -42,7 +42,7 @@ def mint():
         print("Failed to fetch from firebase!")
 
     # * List max_count items
-    max_count = 5
+    max_count = 4
     while(count <= max_count):
         # * Refresh titles with updated counts
         collection_title = 'Reverberate Series Token ' + str(count)
@@ -53,7 +53,7 @@ def mint():
             ' in the Reverberate Series by Toxic Mushroom.' + \
             'Nature\'s patterns present themselves everywhere in our daily lives.' + \
             'This series captures the ever reverberating waves emminating around us.'
-        token_price = '64'
+        token_price = '54'
 
         # * Safely make images directory if it doesn't exist
         Path("images/" + main_name + "_series").mkdir(parents=True, exist_ok=True)

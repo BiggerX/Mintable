@@ -59,6 +59,7 @@ def main(filename, background_image, title, screenWidth=400, screenHeight=400):
         screen.blit(bg, (0, 0))
 
         # * draw cursorList
+        temp_rand = random.randint(30, 50)
         for i, plusSign in enumerate(cursorList):
             rR = math.sin(i * .01) * 127 + 128
             rG = math.sin(i * .01 + 5) * 127 + 128
@@ -72,10 +73,12 @@ def main(filename, background_image, title, screenWidth=400, screenHeight=400):
             rG = rG * fader
             rB = rB * fader
 
+            # if i % 80 == 0:
+            #     temp_rand = random.randint(30, 50)
             # try changing the value below from .005 - 5.2
             # you'll get some interesting results in between
-            sizer = int(math.sin(i * .043) *
-                        random.randint(10, 50) + random.randint(10, 50))
+            sizer = int(math.sin(i * .043) ** 2 *
+                        temp_rand + temp_rand)
             draw_plus_sign(screen, plusSign[0],
                            plusSign[1], sizer, (rR, rG, rB))
 
