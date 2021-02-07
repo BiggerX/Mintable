@@ -217,9 +217,9 @@ def Mintable_Listing(browser, count, token_price, file_name, db, collection_name
 
     doc_ref = db.collection(collection_name).document(u'art_list')
 
-    doc_ref.update({
+    doc_ref.set({
         'art': prev_array + [data],
-    }, {merge: true})
+    }, True)
 
     print("Successfully uploaded data to firebase!")
 

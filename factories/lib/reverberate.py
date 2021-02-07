@@ -13,9 +13,10 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 0)
 def r(): return random.randint(20, 80)
 
 
-def main(filename, title, screenWidth=400, screenHeight=400):
+def main(filename, background_image, title, screenWidth=400, screenHeight=400):
     pygame.init()
     pygame.display.set_caption(title)
+    bg = pygame.image.load(background_image)
 
     screen = pygame.display.set_mode((screenWidth, screenHeight))
     clock = pygame.time.Clock()
@@ -54,6 +55,8 @@ def main(filename, title, screenWidth=400, screenHeight=400):
 
     while running and counter < max_count:
         screen.fill(white)
+        # * Blit background image
+        screen.blit(bg, (0, 0))
 
         # * draw cursorList
         for i, plusSign in enumerate(cursorList):
@@ -197,4 +200,4 @@ def main(filename, title, screenWidth=400, screenHeight=400):
 
 if __name__ == "__main__":
     filename = "result.gif"
-    main(filename, "Taste " + str(1), 1000, 1000)
+    main(filename, "test_images/background.png", "Taste " + str(1), 1000, 1000)

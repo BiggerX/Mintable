@@ -61,10 +61,13 @@ def mint():
         file_name = "images/" + main_name + "_series/" + main_name + "_token_" + \
             str(count) + ".gif"
         my_file = Path(file_name)
+
+        background_image = "images/background_images/background_" + \
+            str(count) + ".png"
         if not my_file.is_file():
             # * Create the art if file doesn't exist
             reverberate.main(
-                file_name, main_name + " " + str(count), 1000, 1000)
+                file_name, background_image, main_name + " " + str(count), 1000, 1000)
         else:
             print("File already exists... proceeding to upload.")
 
