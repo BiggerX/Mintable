@@ -12,6 +12,42 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0, 0)
 
 def r(): return random.randint(20, 80)
 
+def draw_flat_line(screen, x1, y1, length, color):
+    for x in range(x1, x1 + length):
+        pygame.gfxdraw.pixel(screen, x, y1, color)
+
+def draw_vertical_line(screen, x1, y1, length, color):
+    for y in range(y1, y1 + length):
+        pygame.gfxdraw.pixel(screen, x1, y, color)
+
+def draw_plus_sign(screen, x, y, size, color):
+    draw_flat_line(screen, x - (size // 2), y, size, color)
+    draw_vertical_line(screen, x, y - (size // 2), size, color)
+
+def draw_cursor_list(cursorList, screen):
+    # * draw cursorList
+    temp_rand = random.randint(30, 50)
+    for i, plusSign in enumerate(cursorList):
+        rR = math.sin(i * .01) * 127 + 128
+        rG = math.sin(i * .01 + 5) * 127 + 128
+        rB = math.sin(i * .01 + 10) * 127 + 128
+
+        # Generate a separate fader for all of them to be scaled by
+        # Remember, we need from 0 - 1, not -1 to 1, hence the add
+        # and divide.
+        fader = (math.sin(i * .02) + 1) / 2
+        rR = rR * fader
+        rG = rG * fader
+        rB = rB * fader
+
+        # if i % 80 == 0:
+        #     temp_rand = random.randint(30, 50)
+        # try changing the value below from .005 - 5.2
+        # you'll get some interesting results in between
+        sizer = int(math.sin(i * .043) ** 2 *
+                    temp_rand + temp_rand)
+        draw_plus_sign(screen, plusSign[0],
+                        plusSign[1], sizer, (rR, rG, rB))
 
 def main(filename, background_image, title, screenWidth=400, screenHeight=400):
     pygame.init()
@@ -29,23 +65,11 @@ def main(filename, background_image, title, screenWidth=400, screenHeight=400):
     plusX = random.randint(screenWidth // 6, screenWidth // 3)
     plusY = random.randint(screenWidth // 6, screenHeight // 3)
 
-    def draw_flat_line(screen, x1, y1, length, color):
-        for x in range(x1, x1 + length):
-            pygame.gfxdraw.pixel(screen, x, y1, color)
-
-    def draw_vertical_line(screen, x1, y1, length, color):
-        for y in range(y1, y1 + length):
-            pygame.gfxdraw.pixel(screen, x1, y, color)
-
-    def draw_plus_sign(screen, x, y, size, color):
-        draw_flat_line(screen, x - (size // 2), y, size, color)
-        draw_vertical_line(screen, x, y - (size // 2), size, color)
-
     # Add a new list before our loop starts
     cursorList = []
 
     counter = 1
-    max_count = random.randint(6000, 10000)
+    max_count = random.randint(2000, 3000)
     random_direction = r()
     random_space = r()
 
@@ -55,34 +79,12 @@ def main(filename, background_image, title, screenWidth=400, screenHeight=400):
 
     while running and counter < max_count:
         screen.fill(white)
+
         # * Blit background image
         screen.blit(bg, (0, 0))
 
         # * draw cursorList
-        temp_rand = random.randint(30, 50)
-        for i, plusSign in enumerate(cursorList):
-            rR = math.sin(i * .01) * 127 + 128
-            rG = math.sin(i * .01 + 5) * 127 + 128
-            rB = math.sin(i * .01 + 10) * 127 + 128
-
-            # Generate a separate fader for all of them to be scaled by
-            # Remember, we need from 0 - 1, not -1 to 1, hence the add
-            # and divide.
-            fader = (math.sin(i * .02) + 1) / 2
-            rR = rR * fader
-            rG = rG * fader
-            rB = rB * fader
-
-            # if i % 80 == 0:
-            #     temp_rand = random.randint(30, 50)
-            # try changing the value below from .005 - 5.2
-            # you'll get some interesting results in between
-            sizer = int(math.sin(i * .043) ** 2 *
-                        temp_rand + temp_rand)
-            draw_plus_sign(screen, plusSign[0],
-                           plusSign[1], sizer, (rR, rG, rB))
-
-        draw_plus_sign(screen, plusX, plusY, 0, white)
+        draw_cursor_list(cursorList, screen)
 
         # loop over each of our cursor positions. if empty, skips
         # First we take top left quarter of screen, make a copy
@@ -149,25 +151,13 @@ def main(filename, background_image, title, screenWidth=400, screenHeight=400):
 
             # * Reset
             screen.fill(white)
-            # draw cursorList
-            for i, plusSign in enumerate(cursorList):
-                rR = math.sin(i * .01) * 127 + 128
-                rG = math.sin(i * .01 + 5) * 127 + 128
-                rB = math.sin(i * .01 + 10) * 127 + 128
 
-                # Generate a separate fader for all of them to be scaled by
-                # Remember, we need from 0 - 1, not -1 to 1, hence the add
-                # and divide.
-                fader = (math.sin(i * .02) + 1) / 2
-                rR = rR * fader
-                rG = rG * fader
-                rB = rB * fader
+            # * Blit background image
+            screen.blit(bg, (0, 0))
 
-                # try changing the value below from .005 - 5.2
-                # you'll get some interesting results in between
-                sizer = int(math.sin(i * .043) * 35 + 35)
-                draw_plus_sign(screen, plusSign[0],
-                               plusSign[1], sizer, (rR, rG, rB))
+            # * draw cursorList
+            draw_cursor_list(cursorList, screen)
+
             plusX = 3 * screenWidth
             plusY = 3 * screenHeight
             draw_plus_sign(screen, plusX, plusY, 15, white)
