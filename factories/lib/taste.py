@@ -43,7 +43,7 @@ def main(filename, title, screenWidth=400, screenHeight=400):
     # Add a new list before our loop starts
     cursorList = []
 
-    counter = 0
+    counter = 1
     max_count = random.randint(6000, 10000)
     random_direction = r()
     random_space = r()
@@ -101,13 +101,16 @@ def main(filename, title, screenWidth=400, screenHeight=400):
                                              screenHeight // 2, screenWidth,
                                              screenHeight))
 
+        # * Update Screen
+        pygame.display.flip()
+
         # * Take screenshot and apend to gif
-        if counter % 20 == 0:
+        if counter % 80 == 0:
             with mss() as sct:
                 sct.shot()
                 im = Image.open('monitor-1.png')
                 im_crop = im.crop(
-                    (0, 100, screenWidth*2, screenHeight*2 - 100))
+                    (0, 100, screenWidth*2, screenHeight*2))
                 gif.append(im_crop)
 
         if counter % space_mod == 0:
@@ -194,4 +197,4 @@ def main(filename, title, screenWidth=400, screenHeight=400):
 
 if __name__ == "__main__":
     filename = "result.gif"
-    main(filename, "Taste " + str(1), 1200, 1200)
+    main(filename, "Taste " + str(1), 1000, 1000)
